@@ -1,5 +1,7 @@
 # RT PIE<br>Real Time PItch Estimator
 
+[**pypi link**](https://pypi.org/project/rt-pie)
+
 ## Installation
 
     pip install rt_pie
