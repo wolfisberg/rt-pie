@@ -25,7 +25,7 @@ Install dependencies
 ### Build / Publish
 
     poetry build
-    poetry publish
+    poetry publish --build [--dry-run]
 
 #### Authors
 Kaspar Wolfisberg<br>
