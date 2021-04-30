@@ -40,7 +40,7 @@ def calculate_unvoiced_detection_performance(f0_true, f0_pred, voice_cutoff=50):
     recall = tp / (tp + fn)
 
     def f_score(precision, recall, beta=1):
-        (1 + beta**2) * (precision * recall) / (beta**2 * precision + recall)
+        return (1 + beta**2) * (precision * recall) / (beta**2 * precision + recall)
 
     return {
         "total_samples": total,
