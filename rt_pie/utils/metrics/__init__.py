@@ -40,8 +40,8 @@ def mean_absolute_error(truth, prediction):
 def get_hz_metrics(hz_true, hz_pred, rpa_relative_tolerance=0.02, print_output=False):
     diff_hz = hz_true - hz_pred
 
-    min_error_hz = np.abs(np.min(diff_hz))
-    max_error_hz = np.abs(np.max(diff_hz))
+    min_error_hz = np.min(np.abs(diff_hz))
+    max_error_hz = np.max(np.abs(diff_hz))
     mean_hz = np.mean(diff_hz)
     median_hz = np.median(diff_hz)
     mae_hz = mean_absolute_error(hz_true, hz_pred)
@@ -52,17 +52,18 @@ def get_hz_metrics(hz_true, hz_pred, rpa_relative_tolerance=0.02, print_output=F
 
     if print_output:
         l = 20
+        r = 6
         f = '_'
         p = 2
-        print(f"{'Min abs err [Hz] '.ljust(l, f)} {round(min_error_hz, p)}")
-        print(f"{'Max abs err [Hz] '.ljust(l, f)} {round(max_error_hz, p)}")
-        print(f"{'Mean err [Hz] '.ljust(l, f)} {round(mean_hz, p)}")
-        print(f"{'Median [Hz] '.ljust(l, f)} {round(median_hz, p)}")
-        print(f"{'MAE in [Hz] '.ljust(l, f)} {round(mae_hz, p)}")
-        print(f"{'StdDev [Hz] '.ljust(l, f)} {round(std_dev_hz, p)}")
-        print(f"{'5% quant err [Hz] '.ljust(l, f)} {round(quantile_05, p)}")
-        print(f"{'95% quant err [Hz] '.ljust(l, f)} {round(quantile_95, p)}")
-        print(f"{'RPA [Hz] '.ljust(l, f)} {round(rpa_hz, p)}")
+        print(__format_prop_for_print("Min abs err [Hz]", min_error_hz))
+        print(__format_prop_for_print("Max abs err [Hz]", max_error_hz))
+        print(__format_prop_for_print("Mean err [Hz]", mean_hz))
+        print(__format_prop_for_print("Median [Hz]", median_hz))
+        print(__format_prop_for_print("MAE [Hz]", mae_hz))
+        print(__format_prop_for_print("StdDev [Hz]", std_dev_hz))
+        print(__format_prop_for_print("5% quant err [Hz]", quantile_05))
+        print(__format_prop_for_print("95% quant err [Hz]", quantile_95))
+        print(__format_prop_for_print("RPA [Hz]", rpa_hz))
 
     return {
         "min_error_hz": min_error_hz,
@@ -75,3 +76,7 @@ def get_hz_metrics(hz_true, hz_pred, rpa_relative_tolerance=0.02, print_output=F
         "quantile_95": quantile_95,
         "rpa_hz": rpa_hz,
     }
+
+
+def __format_prop_for_print(name, value, filler="_", decimal_places=2, length_name=20, length_value=8):
+    return f"{(name + ' ').ljust(length_name, filler)}{(' ' + str(round(value, decimal_places))).rjust(length_value, filler)}"
