@@ -20,16 +20,16 @@ def calculate_unvoiced_detection_performance(f0_true, f0_pred, voice_cutoff=50):
 
     tn = tp = fn = fp = 0
     for i in range(len(f0_true)):
-        if f0_true[i] == 0 and f0_pred[i] == 0:
+        if f0_true[i] <= voice_cutoff and f0_pred[i] <= voice_cutoff:
             tp += 1
             continue
-        if f0_true[i] > 0 and f0_pred[i] > 0:
+        if f0_true[i] > voice_cutoff and f0_pred[i] > voice_cutoff:
             tn += 1
             continue
-        if f0_true[i] == 0 and f0_pred[i] > 0:
+        if f0_true[i] <= voice_cutoff and f0_pred[i] > voice_cutoff:
             fn += 1
             continue
-        if f0_true[i] > 0 and f0_pred[i] == 0:
+        if f0_true[i] > voice_cutoff and f0_pred[i] <= voice_cutoff:
             fp += 1
             continue
 
