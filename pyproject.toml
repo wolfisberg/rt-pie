@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rt_pie"
-version = "0.1.6"
+version = "0.1.7"
 description = "Real Rime PItch Estimator"
 authors = ["Kaspar Wolfisberg", "Luca Di Lanzo"]
 readme = "README.md"
@@ -8,7 +8,7 @@ homepage = "https://github.com/wolfisberg/rt-pie"
 repository = "https://github.com/wolfisberg/rt-pie"
 
 [tool.poetry.dependencies]
-python = "~3.8"
+python = "~3.7"
 numpy = "~1.19"
 mir_eval = "^0.6"
 
