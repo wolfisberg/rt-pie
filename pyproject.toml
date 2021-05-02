@@ -11,6 +11,7 @@ repository = "https://github.com/wolfisberg/rt-pie"
 python = "~3.7"
 numpy = "~1.19"
 mir_eval = "^0.6"
+tensorflow = "^2.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
