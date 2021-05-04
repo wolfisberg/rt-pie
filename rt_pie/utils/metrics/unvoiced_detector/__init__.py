@@ -39,9 +39,6 @@ def calculate_unvoiced_detection_performance(f0_true, f0_pred, voice_cutoff=50):
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
 
-    def f_score(precision, recall, beta=1):
-        return (1 + beta**2) * (precision * recall) / (beta**2 * precision + recall)
-
     return {
         "total_samples": total,
         "tn_percentage": tn / total,
@@ -55,3 +52,7 @@ def calculate_unvoiced_detection_performance(f0_true, f0_pred, voice_cutoff=50):
         "accuracy": (tp + tn) / total,
         "f1_score": f_score(precision, recall)
     }
+
+
+def f_score(precision, recall, beta=1):
+    return (1 + beta**2) * (precision * recall) / (beta**2 * precision + recall)
