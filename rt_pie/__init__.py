@@ -1,8 +1,7 @@
 import time
-import librosa
 
-from rt_pie import arg_parser, file_processor, microphone_processor, config
-
+from rt_pie import arg_parser, file_processor, microphone_processor
+from rt_pie.rt_pie_lib import config
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
 args = arg_parser.parse_args()
@@ -36,7 +35,7 @@ def write_plot(plot):
 
 
 def write_audio(audio):
-    librosa.output.write_wav(f"{timestamp}_recording.wav", audio, config.SAMPLE_RATE, norm=False)
+    # librosa.output.write_wav(f"{timestamp}_recording.wav", audio, config.SAMPLE_RATE, norm=False)
     raise NotImplementedError("Not yet implemented.")
 
 

@@ -12,7 +12,7 @@ if path_f0:
 import numpy as np
 import sounddevice as sd
 
-from rt_pie import config
+from rt_pie.rt_pie_lib import config
 
 
 def process_microphone(args):
