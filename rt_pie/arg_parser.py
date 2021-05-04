@@ -1,5 +1,6 @@
 import argparse
-from rt_pie import nn_models
+
+from rt_pie import fitted_models
 
 
 def parse_args():
@@ -11,17 +12,17 @@ def parse_args():
     input_group = parser.add_argument_group("input (optional)", description="specify the input source to use"
                                             + "\ndefault: microphone")
     input_group.add_argument("-i", "--input", help="provide a .wav file to be used as input\ninstead of the"
-                             " microphone", metavar="WAV_FILE", type=argparse.FileType("r"))
+                             " microphone", metavar="WAV_FILE")
     input_group.add_argument("-t", "--pitch", help="provide a text file containing true\npitch values to receive"
                              " performance\nmetrics about the pitch estimations\nrequires: -i option",
-                             metavar="PITCH_FILE", type=argparse.FileType("r"))
+                             metavar="PITCH_FILE")
 
     analysis_group = parser.add_argument_group("analysis (optional)", description="specify the degree of analysis that is put out"
                                                + "\ndefault: spectrogram of audio including pitch estimations")
-    format_choices = lambda x: f"    {x[0].ljust(10, ' ')}{x[1]}\n"
-    analysis_group.add_argument("-m", "--model", help="choose model for pitch estimations"
-                                + "\nchoices:\n" + "".join([format_choices(m) for m in nn_models.models]),
-                                metavar="MODEL", choices=nn_models.models)
+    format_choices = lambda key,value: f"    {key.ljust(10, ' ')}{value[0]}\n"
+    analysis_group.add_argument("-m", "--model", help="choose model for pitch estimations\nchoices:\n"
+                                + "".join([format_choices(m, fitted_models.models[m]) for m in fitted_models.models]),
+                                metavar="MODEL", choices=fitted_models.models)
     analysis_group.add_argument("-S", "--no-spectrogram", help="plot pitch estimations without spectrogram"
                                 "\nimproves latency", action="store_true")
     analysis_group.add_argument("-P", "--no-plot", help="do not show plot\nimproves latency",
