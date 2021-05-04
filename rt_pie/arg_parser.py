@@ -29,7 +29,8 @@ def parse_args():
 
     output_group = parser.add_argument_group("output (optional)", description="specify persistence of the output"
                                              + "\ndefault: stdout only")
-    output_group.add_argument("-o", "--output-audio", help="writes recorded audio out to file", action="store_true")
+    output_group.add_argument("-o", "--output-audio", help="writes recorded audio out to file"
+                              + "\nincompatibility: -f option", action="store_true")
     output_group.add_argument("-e", "--output-pitch", help="saves pitch estimations file", action="store_true")
     output_group.add_argument("-p", "--output-plot", help="saves plot to file\nincompatibility: -P option",
                               action="store_true")
@@ -39,6 +40,8 @@ def parse_args():
         parser.error("The pitch option (-p) requires the input option (-i)")
     if args.output_plot and args.no_plot:
         parser.error("The output-plot option (-p) is incompatible with the no-plot option (-P)")
+    if args.output_audio and args.input is not None:
+        parser.error("The output-audio option (-o) is incompatible with the input option (-i)")
 
     return args
 
