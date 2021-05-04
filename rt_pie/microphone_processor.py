@@ -18,9 +18,9 @@ from rt_pie import config
 def process_microphone(args):
     raise NotImplementedError("Not yet implemented.")
     pitch_estimations = None
-    spectrogram = None
+    plot = None
     audio_recording = None
-    return pitch_estimations, spectrogram, audio_recording
+    return pitch_estimations, plot, audio_recording
 
 
 def __check_device_selection(devices, selection):
