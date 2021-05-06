@@ -19,10 +19,9 @@ def parse_args():
 
     analysis_group = parser.add_argument_group("analysis (optional)", description="specify the degree of analysis that is put out"
                                                + "\ndefault: spectrogram of audio including pitch estimations")
-    format_choices = lambda key,value: f"    {key.ljust(10, ' ')}{value[0]}\n"
     analysis_group.add_argument("-m", "--model", help="choose model for pitch estimations\nchoices:\n"
-                                + "".join([format_choices(m, fitted_models.models[m]) for m in fitted_models.models]),
-                                metavar="MODEL", choices=fitted_models.models)
+                                + "".join([m.help_formatting() for m in fitted_models.models]),
+                                metavar="MODEL", choices=[m.name for m in fitted_models.models])
     analysis_group.add_argument("-S", "--no-spectrogram", help="plot pitch estimations without spectrogram"
                                 "\nimproves latency", action="store_true")
     analysis_group.add_argument("-P", "--no-plot", help="do not show plot\nimproves latency",
