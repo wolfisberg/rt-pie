@@ -25,7 +25,7 @@ models = [
 def get_model(model):
     try:
         if model is None:
-            model = models[1].name
+            model = models[0].name
         return load_model(*[m.path for m in models if m.name == model])
     except Exception as e:
         logging.error("Could not find specified model.")
