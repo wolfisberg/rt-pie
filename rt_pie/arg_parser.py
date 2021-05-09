@@ -36,6 +36,12 @@ def parse_args():
                               action="store_true")
 
     args = parser.parse_args()
+    check_invalid_args(parser, args)
+    set_default_args(args)
+    return args
+
+
+def check_invalid_args(parser, args):
     if args.pitch is not None and args.input is None:
         parser.error("The pitch option (-p) requires the input option (-i)")
     if args.output_plot and args.no_plot:
@@ -43,7 +49,10 @@ def parse_args():
     if args.output_audio and args.input is not None:
         parser.error("The output-audio option (-o) is incompatible with the input option (-i)")
 
-    return args
+
+def set_default_args(args):
+    if args.model is None:
+        args.model = fitted_models.models[0].name
 
 
 if __name__ == "__main__":
