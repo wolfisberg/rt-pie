@@ -2,7 +2,6 @@ import sounddevice as sd
 import librosa
 import numpy as np
 import time
-import tensorflow as tf
 
 from rt_pie import config
 from rt_pie import fitted_models
@@ -19,16 +18,9 @@ def process_file(args):
     audio, _ = librosa.load(args.input, sr=config.SAMPLE_RATE, mono=True)
     num_blocks = len(audio) // config.BLOCK_SIZE
     audio = np.array(audio, dtype=float)[:num_blocks * config.BLOCK_SIZE].reshape((-1, config.BLOCK_SIZE))
-    # play_file(audio)
 
     model = fitted_models.get_model(args.model)
-    # print(model.summary())
     p = []
-    # i = 0
-    # while i < len(audio):
-    #     p = p + model.predict(audio[i:i+config.BATCH_SIZE])
-    #     i += config.BATCH_SIZE
-
     time_elapsed = [time.perf_counter_ns()]
     for a in audio:
         p.append(*model.predict(np.array([a])))
