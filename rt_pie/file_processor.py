@@ -40,7 +40,7 @@ def process_file(args):
     p_cent = converters.convert_bin_to_local_average_cents(np.array(p))
     p_hz = converters.convert_cent_to_hz(p_cent)
     spectrogram = None
-    return pitch_estimations, spectrogram
+    return p_hz, spectrogram
 
 
 def play_file(audio):
