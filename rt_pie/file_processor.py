@@ -6,15 +6,11 @@ import time
 from rt_pie import config
 from rt_pie import fitted_models
 from rt_pie.rt_pie_lib import converters
+from rt_pie import stream_processor
 
 
 def process_file(args):
-    if args.pitch is not None:
-        raise NotImplementedError("Not yet implemented.")
-        # todo: make pitch reading more generic (T[0] is for ptdbtug)
-        # todo: to make use of true pitch, we need hopsize and offset as well
-        pitch_true = np.genfromtxt(args.pitch, delimiter=" ").T[0]
-
+    __play_file(args)
     audio, _ = librosa.load(args.input, sr=config.SAMPLE_RATE, mono=True)
     num_blocks = len(audio) // config.BLOCK_SIZE
     audio = np.array(audio, dtype=float)[:num_blocks * config.BLOCK_SIZE].reshape((-1, config.BLOCK_SIZE))
@@ -35,20 +31,27 @@ def process_file(args):
     return p_hz, spectrogram
 
 
-def play_file(audio):
-    # todo: ask user for device
-    stream = sd.OutputStream(
-        # device=device,
-        samplerate=config.SAMPLE_RATE,
-        channels=config.NUM_CHANNELS,
-        blocksize=config.BLOCK_SIZE,
-        # callback=callb
-    )
-    with stream:
-        print("Playing audio.")
-        while True:
-            pass
-    print("Recording finished.")
+def __output_callback():
+    print("test")
 
 
-
+def __play_file(args):
+    try:
+        if args.device_prompt:
+            config.prompt_audio_device("Pick audio device for playback.")
+        stream = sd.OutputStream(
+            samplerate=config.SAMPLE_RATE,
+            channels=config.NUM_CHANNELS,
+            blocksize=config.BLOCK_SIZE,
+            callback=stream_processor.process_output_stream
+        )
+        with stream:
+            print("Playback started.")
+            while True:
+                pass
+    except KeyboardInterrupt:
+        print('Playback stopped.')
+    except Exception as e:
+        print("Error during playback.")
+        print(e)
+        exit(-1)

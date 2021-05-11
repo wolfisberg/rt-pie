@@ -20,8 +20,7 @@ def __check_device_selection(devices, selection):
 
 def prompt_audio_device(msg):
     audio_devices = sd.query_devices()
-    print(msg)
-    print("Available audio devices:")
+    print(f"{msg} Available audio devices:")
     if len(audio_devices) < 2:
         print(f"Using the only available audio device:")
         print(audio_devices[0]["name"])
