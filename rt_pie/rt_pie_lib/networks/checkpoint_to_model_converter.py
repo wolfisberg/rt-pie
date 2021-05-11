@@ -13,14 +13,15 @@ def convert_checkpoints_to_model(checkpoints_path, model):
 
 
 if __name__ == "__main__":
-    model_arg = sys.argv[1].lower()
-    if "lstm" in model_arg:
-        model = lstm.get_model_lstm(sys.argv[3])
-    elif "crepe" in model_arg:
-        model = crepe.get_model_crepe_without_time_component(sys.argv[3])
-    elif "deepf0" in model_arg:
-        model = deepf0.get_model_deepf0_without_time_compoonent(sys.argv[3])
+    file_name = sys.argv[1].lower()
+    block_size = int(sys.argv[2])
+    if "lstm" in file_name:
+        model = lstm.get_model_lstm(block_size)
+    elif "crepe" in file_name:
+        model = crepe.get_model_crepe_without_time_component(block_size)
+    elif "deepf0" in file_name:
+        model = deepf0.get_model_deepf0_without_time_compoonent(block_size)
     else:
         raise RuntimeError("Unable to determine model type from file name.")
 
-    convert_checkpoints_to_model(sys.argv[2], model)
+    convert_checkpoints_to_model(file_name, model)
