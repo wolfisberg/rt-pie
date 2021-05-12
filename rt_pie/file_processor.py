@@ -28,7 +28,7 @@ def process_file(args):
     time_elapsed = (time_elapsed - np.min(time_elapsed)) / 1e6
 
     print(f"len audio input: {round(len(audio.flatten()) / config.SAMPLE_RATE, 2)}s")
-    print(f"model: {model.name}, mean ptime: {round(time_elapsed[-1] / len(time_elapsed), 2)}ms, total ptime: {round(time_elapsed[-1] / 1000, 2)}s\n")
+    print(f"model: {model.name}, mean ptime: {round(time_elapsed[-1] / len(time_elapsed - 1), 2)}ms, total ptime: {round(time_elapsed[-1] / 1e3, 2)}s\n")
 
     p_cent = converters.convert_bin_to_local_average_cents(np.array(p))
     p_hz = converters.convert_cent_to_hz(p_cent)
