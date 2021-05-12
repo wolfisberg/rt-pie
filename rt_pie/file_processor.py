@@ -13,6 +13,7 @@ def process_file(args):
     model, fitted_model = fitted_models.get_model(args.model)
 
     audio, _ = librosa.load(args.input, sr=config.SAMPLE_RATE, mono=True)
+    audio_len = len(audio) / config.SAMPLE_RATE
     num_blocks = len(audio) // model.block_size
     audio = np.array(audio, dtype=float)[:num_blocks * model.block_size].reshape((-1, model.block_size))
 
@@ -21,13 +22,11 @@ def process_file(args):
     p = []
     time_elapsed = [time.perf_counter_ns()]
 
-    if not model.time_component:
-        for a in audio:
-            p.append(*fitted_model.predict(np.array([a])))
-            p.append(*fitted_model.predict(np.array([a])))
-            time_elapsed.append(time.perf_counter_ns())
-    else:
-        p.append(*fitted_model.predict(np.array([audio])))
+    if model.time_component:
+        audio = [np.array([a]) for a in audio]
+
+    for a in audio:
+        p.append(*fitted_model.predict(np.array([a])))
         time_elapsed.append(time.perf_counter_ns())
 
     if not model.time_component:
@@ -38,7 +37,7 @@ def process_file(args):
 
     time_elapsed = __convert_elapsed_time(time_elapsed)
 
-    print(f"len audio input: {round(len(audio.flatten()) / config.SAMPLE_RATE, 2)}s")
+    print(f"len audio input: {round(audio_len, 2)}s")
     print(f"model: {model.name}, mean ptime: {round(time_elapsed[-1] / len(time_elapsed), 2)}ms, total ptime: {round(np.sum(time_elapsed) / 1e3, 2)}s\n")
     plot = None
     return p_hz, time_elapsed, plot
