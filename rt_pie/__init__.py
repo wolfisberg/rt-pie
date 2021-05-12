@@ -1,14 +1,16 @@
 import time
 
 from rt_pie import arg_parser, file_processor, microphone_processor
-from rt_pie.rt_pie_lib import config
+from rt_pie import config
+from rt_pie.fitted_models import models
+
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
 args = arg_parser.parse_args()
 
 
-def process_file_input():
-    pitch_estimations, plot = file_processor.process_file(args)
+def process_file_input(args):
+    pitch_estimations, prediction_times, plot = file_processor.process_file(args)
     if args.output_pitch:
         write_pitch(pitch_estimations)
     if args.output_plot:
@@ -41,9 +43,16 @@ def write_audio(audio):
 
 def main():
     if args.input:
-        process_file_input()
+        compare_prediction_performance()
+        # process_file_input(args)
     else:
         process_microphone_input()
+
+
+def compare_prediction_performance():
+    for m in models:
+        args.model = m.name
+        process_file_input(args)
 
 
 if __name__ == '__main__':

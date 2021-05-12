@@ -1,3 +1,4 @@
+import os
 import sounddevice as sd
 
 
@@ -5,6 +6,7 @@ SAMPLE_RATE = 16000
 NUM_CHANNELS = 1
 BLOCK_SIZE = 1024
 BATCH_SIZE = 32
+MODELS_BASE_PATH = os.path.join("tmp_data", "models")
 
 
 def __check_device_selection(devices, selection):
