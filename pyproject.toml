@@ -14,6 +14,7 @@ mir_eval = "^0.6"
 tensorflow = "^2.4.1"
 sounddevice = "^0.4.1"
 librosa = "^0.8.0"
+matplotlib = "^3.4.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
