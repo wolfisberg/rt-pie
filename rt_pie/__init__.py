@@ -45,8 +45,8 @@ def write_audio(audio):
 
 def main():
     if args.input:
-        compare_prediction_performance()
-        # process_file_input(args)
+        # compare_prediction_performance()
+        process_file_input(args)
     else:
         process_microphone_input()
 

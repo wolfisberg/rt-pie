@@ -20,21 +20,37 @@ def process_file(args):
 
     p = []
     time_elapsed = [time.perf_counter_ns()]
-    for a in audio:
-        p.append(*fitted_model.predict(np.array([a])))
+
+    if not model.time_component:
+        for a in audio:
+            p.append(*fitted_model.predict(np.array([a])))
+            p.append(*fitted_model.predict(np.array([a])))
+            time_elapsed.append(time.perf_counter_ns())
+    else:
+        p.append(*fitted_model.predict(np.array([audio])))
         time_elapsed.append(time.perf_counter_ns())
 
-    time_elapsed = np.array(time_elapsed)
-    time_elapsed = (time_elapsed - np.min(time_elapsed)) / 1e6
+    if not model.time_component:
+        p_cent = converters.convert_bin_to_local_average_cents(np.array(p))
+        p_hz = converters.convert_cent_to_hz(p_cent)
+    else:
+        p_hz = np.array(p).flatten()
+
+    time_elapsed = __convert_elapsed_time(time_elapsed)
 
     print(f"len audio input: {round(len(audio.flatten()) / config.SAMPLE_RATE, 2)}s")
-    print(f"model: {model.name}, mean ptime: {round(time_elapsed[-1] / len(time_elapsed - 1), 2)}ms, total ptime: {round(time_elapsed[-1] / 1e3, 2)}s\n")
-
-    p_cent = converters.convert_bin_to_local_average_cents(np.array(p))
-    p_hz = converters.convert_cent_to_hz(p_cent)
-
+    print(f"model: {model.name}, mean ptime: {round(time_elapsed[-1] / len(time_elapsed), 2)}ms, total ptime: {round(np.sum(time_elapsed) / 1e3, 2)}s\n")
     plot = None
     return p_hz, time_elapsed, plot
+
+
+def __convert_elapsed_time(time_elapsed):
+    times = np.array(time_elapsed)
+    times = (times - np.min(times)) / 1e6
+    res = []
+    for i in range(1, len(times)):
+        res.append(times[i] - times[i - 1])
+    return np.array(res)
 
 
 def __output_callback():
