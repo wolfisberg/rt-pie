@@ -11,12 +11,12 @@ args = arg_parser.parse_args()
 
 
 def process_file_input(args):
-    pitch_estimations, prediction_times, plot = file_processor.process_file(args)
+    res = file_processor.process_file(args)
     if args.output_pitch:
-        write_pitch(pitch_estimations)
+        write_pitch(res["p_hz"])
     if args.output_plot:
-        write_plot(plot)
-    return prediction_times
+        write_plot(res["plot"])
+    return res
 
 
 def process_microphone_input():
@@ -49,22 +49,6 @@ def main():
         process_file_input(args)
     else:
         process_microphone_input()
-
-
-def compare_prediction_performance():
-    shuffled = models.copy()
-    random.shuffle(shuffled)
-    result = {}
-    for i in range(3):
-        for m in shuffled:
-            args.model = m.name
-            times = process_file_input(args)
-            if m.name in result:
-                result[m.name].append(times)
-            else:
-                result[m.name] = [times]
-    print("done")
-
 
 
 if __name__ == '__main__':

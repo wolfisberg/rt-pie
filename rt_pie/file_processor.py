@@ -40,7 +40,12 @@ def process_file(args):
     print(f"len audio input: {round(audio_len, 2)}s")
     print(f"model: {model.name}, mean ptime: {round(time_elapsed[-1] / len(time_elapsed), 2)}ms, total ptime: {round(np.sum(time_elapsed) / 1e3, 2)}s\n")
     plot = None
-    return p_hz, time_elapsed, plot
+    return {
+        "p_hz": p_hz,
+        "p_times": time_elapsed,
+        "audio_duration": audio_len,
+        "plot": plot
+    }
 
 
 def __convert_elapsed_time(time_elapsed):
