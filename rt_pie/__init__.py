@@ -1,4 +1,5 @@
 import time
+import random
 
 from rt_pie import arg_parser, file_processor, microphone_processor
 from rt_pie import config
@@ -15,6 +16,7 @@ def process_file_input(args):
         write_pitch(pitch_estimations)
     if args.output_plot:
         write_plot(plot)
+    return prediction_times
 
 
 def process_microphone_input():
@@ -50,9 +52,19 @@ def main():
 
 
 def compare_prediction_performance():
-    for m in models:
-        args.model = m.name
-        process_file_input(args)
+    shuffled = models.copy()
+    random.shuffle(shuffled)
+    result = {}
+    for i in range(3):
+        for m in shuffled:
+            args.model = m.name
+            times = process_file_input(args)
+            if m.name in result:
+                result[m.name].append(times)
+            else:
+                result[m.name] = [times]
+    print("done")
+
 
 
 if __name__ == '__main__':
