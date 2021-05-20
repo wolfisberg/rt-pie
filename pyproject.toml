@@ -6,6 +6,7 @@ authors = ["Kaspar Wolfisberg", "Luca Di Lanzo"]
 readme = "README.md"
 homepage = "https://github.com/wolfisberg/rt-pie"
 repository = "https://github.com/wolfisberg/rt-pie"
+exclude = ["tmp_data", "rt_pie/serialized_models"]
 
 [tool.poetry.dependencies]
 python = "~3.7"
