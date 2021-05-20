@@ -1,5 +1,6 @@
 import numpy as np
 import mir_eval
+from scipy.signal import argrelextrema
 
 
 def convert_cent_to_hz(cent, f_ref=10.0):
@@ -52,3 +53,37 @@ def convert_bin_to_local_average_cents(salience, center=None):
         return np.array([convert_bin_to_local_average_cents(salience[i, :]) for i in
                          range(salience.shape[0])])
     raise Exception("Label should be either 1d or 2d ndarray.")
+
+
+def convert_bin_to_local_average_cents_lowest_maxima(salience, center=None, maxima_order=10, maxima_minval=0.2, tolerance=0.1):
+    """
+    find the weighted average cents near the argmax bin todo
+    """
+    if salience.ndim == 1:
+        maxima = argrelextrema(salience, np.greater, order=maxima_order)[0]
+        maxima = [(x, convert_cent_to_hz(convert_bin_to_local_average_cents(__create_maximum_bin(x))))
+                  for x in maxima if salience[x] >= maxima_minval]
+        if len(maxima) > 1:
+            success, idx = __try_find_f0_in_maxima(maxima, tolerance=tolerance)
+            if success:
+                salience = np.zeros(360)
+                salience[maxima[idx][0]] = 1
+        return convert_bin_to_local_average_cents(salience, center=center)
+    raise Exception("Label should be 1d ndarray.")
+
+
+def __create_maximum_bin(index):
+    b = np.zeros(360)
+    b[index] = 1
+    return b
+
+
+def __try_find_f0_in_maxima(maxima, tolerance=0.1):
+    maxima.sort(key=lambda x: x[1])
+    for i in range(len(maxima) - 1):
+        max_current = maxima[i][1]
+        max_next = maxima[i + 1][1]
+        rel_diff = abs(max_current * 2 - max_next) / max_next
+        if rel_diff <= tolerance:
+            return True, i
+    return False, None
