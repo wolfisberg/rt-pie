@@ -4,6 +4,7 @@ import random
 from rt_pie import arg_parser, file_processor, microphone_processor
 from rt_pie import config
 from rt_pie.fitted_models import models
+from rt_pie import plotter
 
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
@@ -12,10 +13,10 @@ args = arg_parser.parse_args()
 
 def process_file_input(args):
     res = file_processor.process_file(args)
-    if args.output_pitch:
-        write_pitch(res["p_hz"])
-    if args.output_plot:
-        write_plot(res["plot"])
+    # if args.output_pitch:
+    #     write_pitch(res["p_hz"])
+    # if args.output_plot:
+    write_plot(res)
     return res
 
 
@@ -34,8 +35,9 @@ def write_pitch(pitches):
         file.write("\n".join(pitches))
 
 
-def write_plot(plot):
-    raise NotImplementedError("Not yet implemented.")
+def write_plot(res):
+    plotter.plot_predictions(res)
+    # raise NotImplementedError("Not yet implemented.")
 
 
 def write_audio(audio):

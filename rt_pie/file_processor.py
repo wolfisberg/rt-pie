@@ -35,6 +35,10 @@ def process_file(args):
     else:
         p_hz = np.array(p).flatten()
 
+    for i in range(len(p_hz)):
+        if p_hz[i] < 60:
+            p_hz[i] = 0
+
     time_elapsed = __convert_elapsed_time(time_elapsed)
 
     print(f"len audio input: {round(audio_len, 2)}s")
@@ -44,7 +48,7 @@ def process_file(args):
         "p_hz": p_hz,
         "p_times": time_elapsed,
         "audio_duration": audio_len,
-        "plot": plot
+        "audio": audio
     }
 
 
