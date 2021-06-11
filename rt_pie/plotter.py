@@ -44,7 +44,7 @@ def plot_predictions(predictions):
 
     plt.legend()
     format = "svg"
-    # plt.savefig(os.path.join(output_path, f'spectrogram.{format}'), format=format)
+    plt.savefig(f'spectrogram.{format}', format=format)
     plt.show()
     # plt.savefig(os.path.join(output_path, f'spectrogram.{format}'), format=format)
 

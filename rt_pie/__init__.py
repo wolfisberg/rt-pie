@@ -6,6 +6,12 @@ from rt_pie import config
 from rt_pie.fitted_models import models
 from rt_pie import plotter
 
+from tensorflow.compat.v1 import ConfigProto
+from tensorflow.compat.v1 import InteractiveSession
+
+pconfig = ConfigProto()
+pconfig.gpu_options.allow_growth = True
+session = InteractiveSession(config=pconfig)
 
 timestamp = time.strftime("%Y%m%d-%H%M%S")
 args = arg_parser.parse_args()
