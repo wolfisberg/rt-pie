@@ -43,9 +43,9 @@ def plot_predictions(predictions):
             plt.plot(p_times, p_hz, label=k)
 
     plt.legend()
-    format = "svg"
+    format = "png"
     plt.savefig(f'spectrogram.{format}', format=format)
-    plt.show()
+    # plt.show()
     # plt.savefig(os.path.join(output_path, f'spectrogram.{format}'), format=format)
 
 
