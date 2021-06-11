@@ -1,6 +1,7 @@
 import os
 import logging
 from tensorflow.keras.models import load_model
+import pathlib
 
 from rt_pie import config
 
@@ -48,7 +49,8 @@ models = [
 def get_model(model):
     try:
         model = next((m for m in models if m.name == model), models[0])
-        return model, load_model(model.path)
+        model_path_abs = os.path.join(pathlib.Path(__file__).parent.parent.absolute(), model.path)
+        return model, load_model(model_path_abs)
     except Exception as e:
         logging.error("Could not find specified model.")
         logging.error(e)
