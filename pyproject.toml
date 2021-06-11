@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "rt_pie"
-version = "0.1.11"
+version = "0.1.12"
 description = "Real Rime PItch Estimator"
 authors = ["Kaspar Wolfisberg", "Luca Di Lanzo"]
 readme = "README.md"
 homepage = "https://github.com/wolfisberg/rt-pie"
 repository = "https://github.com/wolfisberg/rt-pie"
-exclude = ["tmp_data", "rt_pie/serialized_models"]
+exclude = ["tmp_data", "rt_pie/serialized_models_too_big"]
 
 [tool.poetry.dependencies]
 python = "~3.7"
